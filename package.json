@@ -2,6 +2,7 @@
   "name": "terminal-i2",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node --loader ts-node/esm ./src/index.ts",
