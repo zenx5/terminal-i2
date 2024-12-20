@@ -1,7 +1,7 @@
 import { KEYS } from "./constant";
 import { cleanTerminal, catchArrows, writeTerminal } from "./terminal";
 
-type typeOptionsMenu = {
+export type typeOptionsMenu = {
     title?: string,
     options?: string[],
     markedOption?: number
