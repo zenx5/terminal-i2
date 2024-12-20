@@ -24,6 +24,8 @@ const defaultOptionsMenu:typeOptionsMenu = {
 }
 
 export default class Menu {
+    x: number = 0;
+    y: number = 0;
     isTemp: boolean = false;
     title: string;
     options: string[] = [];
@@ -54,6 +56,12 @@ export default class Menu {
         this.bgColorOption = bgColorOption as string;
         this.colorOptionHover = colorOptionHover as string;
         this.bgColorOptionHover = bgColorOptionHover as string;
+    }
+
+    position(x:number, y:number){
+        this.x = x;
+        this.y = y;
+        return this
     }
 
     addOption(option: string) {
@@ -126,10 +134,34 @@ export default class Menu {
                 opt
             )
             .join('\n')
-        await writeTerminal(`[${colorTitle}]${this.title}[/${colorTitle}]\n${colored(bgColorOption, colorOption, optionsText)}\n`)
+        await writeTerminal(`[${colorTitle}]${this.title}[/${colorTitle}]\n${colored(bgColorOption, colorOption, optionsText)}\n`, this.x, this.y)
         return this
     }
 
+    async json2menu(json: any) {
+        if( json.title ) this.title = json.title
+        if( json.colorTitle ) this.colorTitle = json.colorTitle
+        if( json.colorOption ) this.colorOption = json.colorOption
+        if( json.bgColorOption ) this.bgColorOption = json.bgColorOption
+        if( json.colorOptionHover ) this.colorOptionHover = json.colorOptionHover
+        if( json.bgColorOptionHover ) this.bgColorOptionHover = json.bgColorOptionHover
+        if( json.options ) this.options = json.options
+        if( json.markedOption ) this.markedOption = json.markedOption
+        return this
+    }
 
+    async file2json( file:string ) {
+        return new Promise((resolve, reject)=>{
+            try{
+                const fs = require('fs')
+                fs.readFile(file, 'utf8', (err:any, data:string)=>{
+                    if( err ) reject(err)
+                    resolve(JSON.parse(data))
+                })
+            }catch(e){
+                reject(e)
+            }
+        })
+    }
 
 }

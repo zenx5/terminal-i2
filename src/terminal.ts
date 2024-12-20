@@ -42,7 +42,7 @@ type colorBgName = 'bgBlack' |
 const terminal = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: ">",
+    prompt: "",
     historySize: 0,
 })
 
@@ -84,13 +84,16 @@ export const readTerminal = async (prompt:string, close?:boolean) => {
     })
 }
 
-export const writeTerminal = (message:string) => {
+export const writeTerminal = (message:string, x:number = 0, y:number = 0) => {
     cleanTerminal()
-    terminal.write(colorize(message as string))
+    for(let i=0; i<y; i++) terminal.write('\n')
+    for(let i=0; i<x; i++) terminal.write(' ')
+    const messageMoved = message.replace(/\n/g, `\n${' '.repeat(x)}`)
+    terminal.write(colorize(messageMoved as string))
 }
 
-export const cleanTerminal = () => {
-    terminal.write(null, {ctrl:true, name:"l"})
+export const cleanTerminal = (x:number = 0, y:number = 0) => {
+    terminal.write('\x1b[2J\x1b[' + x + ';' + y + 'H');
 }
 
 export const colorizeWith = (message:string, color:colorName, bgColor:colorBgName|'' = 'bgBlack') => {
