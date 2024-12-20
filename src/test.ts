@@ -1,8 +1,8 @@
 import { exit } from "process";
 import { readTerminal } from "./terminal";
-import Menu from "./menu";
+import createMenu from "./menu";
 
-const menu = new Menu({
+const menu = new createMenu({
     colorTitle: 'red',
     bgColorOption: '',
     colorOption: 'white',
