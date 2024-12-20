@@ -1,11 +1,11 @@
 {
   "name": "terminal-i2",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "",
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "node --loader ts-node/esm ./src/index.ts",
+    "test": "node --loader ts-node/esm ./src/test.ts",
     "build": "tsc"
   },
   "keywords": [],
