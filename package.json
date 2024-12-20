@@ -9,7 +9,14 @@
     "build": "tsc && tsc-alias"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Octavio Martínez",
+    "nickname": "zenx5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zenx5/terminal-i2.git"
+  },
   "license": "ISC",
   "dependencies": {
     "chalk": "5.3.0"
