@@ -9,3 +9,52 @@ This is a first version and we will add other functionalities.
 npm install terminal-i2
 pnpm install terminal-i2
 ```
+
+
+
+## Usage
+
+- Type of options menu
+    - title: Title of the menu
+    - options: Different options that the menu will have
+    - markedOption: default option marked
+    - colorTitle: color of the title
+    - colorOption: color of the options
+    - bgColorOption: color of the background of the options
+    - colorOptionHover: color of the options when the selector is over
+    - bgColorOptionHover: color of the background of the options when the selector is over
+
+    ![type-options-menu](image.png)
+
+- Example 1
+```javascript
+    import { createMenu } from 'terminal-i2';ç
+    const menu = new createMenu({
+        colorTitle: 'red',
+        bgColorOption: '',
+        colorOption: 'white',
+        bgColorOptionHover: 'bgYellow',
+        colorOptionHover: 'red',
+    });
+    const option = await menu
+        .head(`[white]Titulo del menu[/white]`)
+        .item("Opción 1", true)
+        .item("Opción 2")
+        .item("Opción 3")
+        .render()
+```
+- Example 2
+```javascript
+    import { createMenu } from 'terminal-i2';
+    const menu = new createMenu({
+        colorTitle: 'red',
+        bgColorOption: '',
+        colorOption: 'white',
+        bgColorOptionHover: 'bgYellow',
+        colorOptionHover: 'red',
+        title: 'Titulo del menu',
+        options: ['Opción 1', 'Opción 2', 'Opción 3'],
+        markedOption: 1
+    });
+    const option = await menu.render()
+```
