@@ -1,38 +1,30 @@
 import { exit } from "process";
-import { readTerminal } from "./terminal";
+import { readTerminal, writeTerminal } from "./terminal";
 import createMenu from "./menu";
 
-const menu = new createMenu({
-    colorTitle: 'red',
+const menu = createMenu({
+    colorTitle: 'white',
     bgColorOption: '',
     colorOption: 'white',
     bgColorOptionHover: 'bgYellow',
-    colorOptionHover: 'red',
+    colorOptionHover: 'black',
 })
-const option = await menu
+const [option, value] = await menu
     .head("Este es el encabezado del menu en verde")
-    .item(" 1 - Saludo.", true)
+    .item(" 1 - Saludo:_", true)
     .item(" 2 - Potencia.")
     .item(" 3 - Salir.")
-    .render()
+    .renderInput()
 
-console.log("La opcion seleccionada es: ", option);
-
-switch (option) {
-    case 1:
-        console.log("Hola mundo!")
-        break;
-    case 2:
-        const base = parseInt(await readTerminal("Ingrese la base: ") as string)
-        const exponente = parseInt(await readTerminal("Ingrese el exponente: ") as string)
-        console.log(`El resultado de ${base}^${exponente} es: ${Math.pow(base, exponente)}`)
-        break;
-    case 3:
-        console.log("Adios!")
-        break;
-    default:
-        console.log("Opcion no valida.")
-        break;
+if( option===1) {
+    console.log(`Hola mundo!${value ? ' en especial a '+value  : ''}`)
 }
-
+else if( option===2) {
+    const base = parseInt(await readTerminal("Ingrese la [red]base[/red]: ") as string)
+    const exponente = parseInt(await readTerminal("Ingrese el [green]exponente[/green]: ") as string)
+    await writeTerminal(`El resultado de [red]${base}[/red]^[green]${exponente}[/green] es: ${Math.pow(base, exponente)}`)
+}
+else if( option===3) {
+    console.log("Adios!")
+}
 exit(0)
