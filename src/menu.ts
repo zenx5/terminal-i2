@@ -1,9 +1,10 @@
-import { KEYS } from "./constant";
+import "./index.d"
+import { KEYS, TYPE_OPTION } from "./constant";
 import { cleanTerminal, catchArrows, writeTerminal } from "./terminal";
 
 export type typeOptionsMenu = {
     title?: string,
-    options?: string[],
+    options?: typeOption[],
     markedOption?: number
     colorTitle?: string,
     colorOption?: string,
@@ -28,7 +29,7 @@ export class Menu {
     y: number = 0;
     isTemp: boolean = false;
     title: string;
-    options: string[] = [];
+    options: typeOption[] = [];
     markedOption: number = 0;
     colorTitle: string;
     colorOption: string;
@@ -49,7 +50,7 @@ export class Menu {
             bgColorOptionHover,
         } = Object.assign(defaultOptionsMenu, optionsMenu) as typeOptionsMenu
         this.title = title as string;
-        this.options = options as string[];
+        this.options = options as typeOption[];
         this.markedOption = markedOption as number;
         this.colorTitle = colorTitle as string;
         this.colorOption = colorOption as string;
@@ -64,8 +65,16 @@ export class Menu {
         return this
     }
 
-    addOption(option: string) {
-        this.options.push(option);
+    addOption(option: string|typeOption, type:typeOptionLabel|typeOptionInput = TYPE_OPTION.LABEL  ) {
+        if( typeof option === 'string' ) {
+            this.options.push({
+                label:option,
+                type
+            })
+        }
+        else{
+            this.options.push(option);
+        }
     }
 
     changeTitle(title: string) {
@@ -78,8 +87,8 @@ export class Menu {
         return this;
     }
 
-    item(option:string, defaultOption:boolean = false) {
-        this.options.push(option);
+    item(option:string|typeOption, defaultOption:boolean = false) {
+        this.addOption(option)
         if( defaultOption ){
             this.markedOption = this.options.length - 1;
         }
@@ -87,7 +96,7 @@ export class Menu {
     }
 
     input(option:string, defaultOption:boolean = false) {
-        return this.item(`${option}:_`, defaultOption)
+        return this.item({ label:option , type:TYPE_OPTION.INPUT, value:'' }, defaultOption)
     }
 
     async render(waitEnter = true){
@@ -124,8 +133,8 @@ export class Menu {
         let option = this.markedOption + 1
         if( this.options.length === 0 ) return [0, '']
         do {
-            const canDelete = this.options[ option - 1 ].at(-2)!==':' && this.options[ option - 1 ].at(-1)!=='_'
-            const isInput = this.options[ option - 1 ].includes(':_')
+            const isInput = this.options[ option -1 ].type
+            const canDelete = this.options[ option -1 ]?.value !== ''
             cleanTerminal()
             await this.renderMenu(option)
             const response = await catchArrows() as { isArrow: boolean, name: string }
@@ -139,17 +148,15 @@ export class Menu {
                 option = option === this.options.length ? 1 : option+1
             }
             else if( !response.isArrow && response.name && isInput ) {
-                if( response.name === KEYS.BACKSPACE ) {
-                    if( canDelete ){
-                        this.options[ option - 1 ] = this.options[ option - 1 ].slice(0,-1)
-                    }
+                if( response.name === KEYS.BACKSPACE && canDelete ){
+                    this.options[ option - 1 ].value = this.options[ option - 1 ].value?.slice(0,-1)
                 }
                 else if( response.name.length === 1 ) {
-                    this.options[ option - 1 ] += response.name
+                    this.options[ option - 1 ].value += response.name
                 }
             }
         } while(isArrow || waitEnter && !isReturn )
-        const [, value] = this.options[ option - 1 ].split(':_')
+        const { value } = this.options[ option - 1 ]
         if( this.isTemp ) this.clean()
         return [option, value]
     }
@@ -174,10 +181,10 @@ export class Menu {
 
         const optionsText = this.options
             .map(
-                (opt, index) =>
-                index===option-1 ?
-                colored(bgColorOptionHover,colorOptionHover,opt) :
-                opt
+                (opt, index) =>{
+                    const text = opt.type===TYPE_OPTION.INPUT ? `${opt.label}: ${opt.value}` : opt.label
+                    return (index!==option-1) ? text : colored(bgColorOptionHover,colorOptionHover,text)
+                }
             )
             .join('\n')
         await writeTerminal(`[${colorTitle}]${this.title}[/${colorTitle}]\n${colored(bgColorOption, colorOption, optionsText)}\n`, this.x, this.y)

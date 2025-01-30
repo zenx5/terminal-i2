@@ -6,3 +6,8 @@ export const KEYS = {
     RETURN: "return",
     BACKSPACE: 'backspace'
 }
+
+export const TYPE_OPTION = {
+    LABEL: 0 as typeOptionLabel,
+    INPUT: 1 as typeOptionInput
+}
