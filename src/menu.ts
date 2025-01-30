@@ -23,7 +23,7 @@ const defaultOptionsMenu:typeOptionsMenu = {
     bgColorOptionHover: "bgYellow"
 }
 
-export default class Menu {
+export class Menu {
     x: number = 0;
     y: number = 0;
     isTemp: boolean = false;
@@ -114,6 +114,48 @@ export default class Menu {
         return option
     }
 
+    async renderInput(waitEnter = true){
+        let isReturn = false
+        let isArrow = false
+        let option = this.markedOption + 1
+        if( this.options.length === 0 ) return [0, '']
+        do {
+            const canDelete = this.options[ option - 1 ].at(-2)!==':' && this.options[ option - 1 ].at(-1)!=='_'
+            const isInput = this.options[ option - 1 ].includes(':_')
+            cleanTerminal()
+            await this.renderMenu(option)
+            const response = await catchArrows() as { isArrow: boolean, name: string }
+            cleanTerminal()
+            isArrow = response.isArrow
+            isReturn = response.name === KEYS.RETURN
+            if( response.name === KEYS.UP ){
+                option = option === 1 ? this.options.length : option-1
+            }
+            else if( response.name === KEYS.DOWN ){
+                option = option === this.options.length ? 1 : option+1
+            }
+            else if( !response.isArrow && response.name && isInput ) {
+                if( response.name === KEYS.BACKSPACE ) {
+                    if( canDelete ){
+                        this.options[ option - 1 ] = this.options[ option - 1 ].slice(0,-1)
+                    }
+                }
+                else if( response.name.length === 1 ) {
+                    this.options[ option - 1 ] += response.name
+                }
+            }
+        } while(isArrow || waitEnter && !isReturn )
+        const [, value] = this.options[ option - 1 ].split(':_')
+        if( this.isTemp ) this.clean()
+        return [option, value]
+    }
+
+    clean(){
+        this.isTemp = false;
+        this.title = ""
+        this.options = []
+    }
+
     async renderMenu(option:number){
         const bgColorOptionHover = this.bgColorOptionHover
         const colorOptionHover = this.colorOptionHover
@@ -164,4 +206,8 @@ export default class Menu {
         })
     }
 
+}
+
+export default function createMenu(config:typeOptionsMenu) {
+    return new Menu(config)
 }

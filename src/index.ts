@@ -1,1 +1,1 @@
-export { type typeOptionsMenu, default as createMenu } from './menu';
+export { type typeOptionsMenu, default } from './menu';
