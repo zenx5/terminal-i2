@@ -1,1 +1,1 @@
-export { default as createMenu } from './menu.js';
+export { default } from './menu.js';
