@@ -86,6 +86,10 @@ export class Menu {
         return this;
     }
 
+    input(option:string, defaultOption:boolean = false) {
+        return this.item(`${option}:_`, defaultOption)
+    }
+
     async render(waitEnter = true){
         let isReturn = false
         let isArrow = false

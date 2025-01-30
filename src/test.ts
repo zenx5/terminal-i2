@@ -11,7 +11,7 @@ const menu = createMenu({
 })
 const [option, value] = await menu
     .head("Este es el encabezado del menu en verde")
-    .item(" 1 - Saludo:_", true)
+    .input(" 1 - Saludo", true)
     .item(" 2 - Potencia.")
     .item(" 3 - Salir.")
     .renderInput()
