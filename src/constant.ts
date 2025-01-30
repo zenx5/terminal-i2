@@ -3,5 +3,6 @@ export const KEYS = {
     DOWN: "down",
     LEFT: "left",
     RIGHT: "right",
-    RETURN: "return"
+    RETURN: "return",
+    BACKSPACE: 'backspace'
 }

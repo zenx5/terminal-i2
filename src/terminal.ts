@@ -1,5 +1,6 @@
 import readline from "node:readline"
 import chalk from "chalk"
+import { KEYS } from "./constant";
 
 type colorName = 'black' |
 'red' |
@@ -39,7 +40,7 @@ type colorBgName = 'bgBlack' |
 'bgCyanBright' |
 'bgWhiteBright';
 
-const terminal = readline.createInterface({
+export const terminal = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
     prompt: "",
@@ -68,20 +69,44 @@ export const catchArrows = async () => {
     })
 }
 
-
-
-export const readTerminal = async (prompt:string, close?:boolean) => {
+export const getLine = async() => {
+    let line = ''
     return new Promise((resolve, reject)=>{
         try{
-            cleanTerminal()
-            terminal.question(colorize(prompt), (response)=>{
-                if( close ) terminal.close()
-                resolve(response)
-            })
+            process.stdin.setMaxListeners(100)
+            process.stdin.on('keypress', function (character, key) {
+                if (key && key.ctrl && key.name == 'c') {
+                    process.stdin.pause();
+                    reject(line)
+                }
+                else if(key && key.name == KEYS.RETURN ){
+                    resolve(line)
+                }
+                else if( key && key.name == KEYS.BACKSPACE ){
+                    line = line.slice(0,-1)
+                }
+                else {
+                    line += key.sequence
+                }
+            });
         }catch(e){
             reject(e)
         }
     })
+}
+
+export const question = async (prompt:string, x:number = 0, y:number = 0) => {
+    await writeTerminal( prompt, x, y )
+    return await getLine()
+}
+
+/**
+ * el argumento x es opcionalmente 'boolean' para conservar la compatibilidad con
+ * la version anterior, sin embargo si llega a usarse un boolean sera ignorado
+ */
+export const readTerminal = async (prompt:string, x:number|boolean = 0, y:number = 0,) => {
+    if( typeof x === 'boolean' ) return await question( prompt )
+    return await question( prompt, x, y )
 }
 
 export const writeTerminal = (message:string, x:number = 0, y:number = 0) => {
