@@ -1,6 +1,6 @@
 {
   "name": "terminal-i2",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "With this module you can create interactive menus in your terminal. Use the `createMenu` class provided by the module for this. This is a first version and we will add other functionalities.",
   "type": "module",
   "main": "./dist/index.js",
