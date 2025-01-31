@@ -99,8 +99,12 @@ export class Menu {
         return this.item({ label:option , type:TYPE_OPTION.INPUT, value:'' }, defaultOption)
     }
 
-    bool(option:string, toggles:[string, string],defaultOption = false) {
+    bool(option:string, toggles:[string, string],defaultOption:boolean = false) {
         return this.item({ label:option , type:TYPE_OPTION.BOOL, value:toggles }, defaultOption)
+    }
+
+    select(option:string, selections:string[], defaultOption:boolean = false) {
+        return this.item({ label:option, type:TYPE_OPTION.SELECT, value:[0, ...selections] }, defaultOption)
     }
 
     async render(waitEnter = true){
@@ -137,6 +141,14 @@ export class Menu {
                 return {
                     ...option,
                     value: (option.value as string[]).sort( ()=> -1 )
+                }
+            case TYPE_OPTION.SELECT:
+                if( key!==KEYS.LEFT && key!==KEYS.RIGHT ) return option
+                const [currentOption, ...options] = option.value
+                const step = Number(key===KEYS.RIGHT && currentOption!==options.length-1) - Number(key===KEYS.LEFT && currentOption!==0)
+                return {
+                    ...option,
+                    value: [currentOption + step, ...options]
                 }
             case TYPE_OPTION.INPUT:
                 if( key === KEYS.BACKSPACE ){
@@ -198,6 +210,11 @@ export class Menu {
             case TYPE_OPTION.BOOL:
                 const [currentValue] = option.value as string[]
                 return `${option.label} < ${currentValue} >`
+            case TYPE_OPTION.SELECT:
+                const [currentOption, ...options] = option.value
+                const arrowLeft = currentOption === 0 ? '|' : '<'
+                const arrowRight = currentOption === options.length - 1 ? '|' : '>'
+                return `${option.label}   ${arrowLeft} ${options.map( (value:string, index:number) => index===currentOption ? `[bgGreen] ${value} [/bgGreen]` : ` ${value} ` ).join(' | ')} ${arrowRight}`
             default:
                 return option.label
         }
