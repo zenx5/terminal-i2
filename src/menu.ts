@@ -1,6 +1,8 @@
 import { typeOption, typeOptionGeneral } from "./index.d"
 import { KEYS, TYPE_OPTION } from "./constant";
 import { cleanTerminal, catchArrows, writeTerminal } from "./terminal";
+import Options from "./options/MixOption";
+
 
 export type typeOptionsMenu = {
     title?: string,
@@ -24,13 +26,11 @@ const defaultOptionsMenu:typeOptionsMenu = {
     bgColorOptionHover: "bgYellow"
 }
 
-export class Menu {
+export class Menu extends Options {
     x: number = 0;
     y: number = 0;
     isTemp: boolean = false;
     title: string;
-    options: typeOption[] = [];
-    markedOption: number = 0;
     colorTitle: string;
     colorOption: string;
     bgColorOption: string;
@@ -39,6 +39,7 @@ export class Menu {
 
 
     constructor(optionsMenu?:typeOptionsMenu) {
+        super()
         const {
             title,
             options,
@@ -65,18 +66,6 @@ export class Menu {
         return this
     }
 
-    addOption(option: string|typeOption, type:typeOptionGeneral = TYPE_OPTION.LABEL  ) {
-        if( typeof option === 'string' ) {
-            this.options.push({
-                label:option,
-                type
-            })
-        }
-        else{
-            this.options.push(option);
-        }
-    }
-
     changeTitle(title: string) {
         this.title = title;
     }
@@ -85,26 +74,6 @@ export class Menu {
         this.isTemp = true;
         this.title = title;
         return this;
-    }
-
-    item(option:string|typeOption, defaultOption:boolean = false) {
-        this.addOption(option)
-        if( defaultOption ){
-            this.markedOption = this.options.length - 1;
-        }
-        return this;
-    }
-
-    input(option:string, defaultOption:boolean = false) {
-        return this.item({ label:option , type:TYPE_OPTION.INPUT, value:'' }, defaultOption)
-    }
-
-    bool(option:string, toggles:[string, string],defaultOption:boolean = false) {
-        return this.item({ label:option , type:TYPE_OPTION.BOOL, value:toggles }, defaultOption)
-    }
-
-    select(option:string, selections:string[], defaultOption:boolean = false) {
-        return this.item({ label:option, type:TYPE_OPTION.SELECT, value:[0, ...selections] }, defaultOption)
     }
 
     async render(waitEnter = true){
@@ -134,41 +103,6 @@ export class Menu {
         return [ option, value ]
     }
 
-    actionOption( option:typeOption, key:string ) {
-        switch( option.type ) {
-            case TYPE_OPTION.BOOL:
-                if( key!==KEYS.LEFT && key!==KEYS.RIGHT ) return option
-                return {
-                    ...option,
-                    value: (option.value as string[]).sort( ()=> -1 )
-                }
-            case TYPE_OPTION.SELECT:
-                if( key!==KEYS.LEFT && key!==KEYS.RIGHT ) return option
-                const [currentOption, ...options] = option.value
-                const step = Number(key===KEYS.RIGHT && currentOption!==options.length-1) - Number(key===KEYS.LEFT && currentOption!==0)
-                return {
-                    ...option,
-                    value: [currentOption + step, ...options]
-                }
-            case TYPE_OPTION.INPUT:
-                if( key === KEYS.BACKSPACE ){
-                    return {
-                        ...option,
-                        value:option.value?.slice(0,-1)
-                    }
-                }
-                else if( key.length === 1 ) {
-                    return {
-                        ...option,
-                        value: option.value + key
-                    }
-                }
-                return option
-            default:
-                return option
-        }
-    }
-
     async renderInput(waitEnter = true){
         this.render(waitEnter)
     }
@@ -193,7 +127,7 @@ export class Menu {
 
         const optionsText = this.options
             .map(
-                (opt, index) =>{
+                (opt:typeOption, index:number) =>{
                     const text = this.renderLabel(opt)
                     return (index!==option-1) ? text : this.colored(bgColorOptionHover,colorOptionHover,text)
                 }
@@ -201,24 +135,6 @@ export class Menu {
             .join('\n')
         await writeTerminal(`[${colorTitle}]${this.title}[/${colorTitle}]\n${this.colored(bgColorOption, colorOption, optionsText)}\n`, this.x, this.y)
         return this
-    }
-
-    private renderLabel(option:typeOption) {
-        switch( option.type ) {
-            case TYPE_OPTION.INPUT:
-                return `${option.label}: ${option.value}`
-            case TYPE_OPTION.BOOL:
-                const [currentValue] = option.value as string[]
-                return `${option.label} < ${currentValue} >`
-            case TYPE_OPTION.SELECT:
-                const [currentOption, ...options] = option.value
-                const arrowLeft = currentOption === 0 ? '|' : '<'
-                const arrowRight = currentOption === options.length - 1 ? '|' : '>'
-                return `${option.label}   ${arrowLeft} ${options.map( (value:string, index:number) => index===currentOption ? `[bgGreen] ${value} [/bgGreen]` : ` ${value} ` ).join(' | ')} ${arrowRight}`
-            default:
-                return option.label
-        }
-
     }
 
     async json2menu(json: any) {

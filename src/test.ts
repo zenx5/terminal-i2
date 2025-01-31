@@ -16,6 +16,12 @@ const [option, value] = await menu
     .item(" 2 - Potencia.")
     .bool(" 3 - Toggle Test", ["[green]Si[/green]", "[red]No[/red]"])
     .select(" 4 - Prueba select", ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4", "Opcion 5"])
+    .number(" 5 - Ingresa tu edad", {
+        value:5,
+        step: 0.5,
+        min: 0,
+        max:10
+    })
     .item(" 5 - Salir.")
     .render()
 
