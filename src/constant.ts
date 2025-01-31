@@ -9,5 +9,7 @@ export const KEYS = {
 
 export const TYPE_OPTION = {
     LABEL: 0 as typeOptionLabel,
-    INPUT: 1 as typeOptionInput
+    INPUT: 1 as typeOptionInput,
+    BOOL: 2 as typeOptionBool
+
 }

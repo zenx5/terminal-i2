@@ -99,11 +99,15 @@ export class Menu {
         return this.item({ label:option , type:TYPE_OPTION.INPUT, value:'' }, defaultOption)
     }
 
+    bool(option:string, toggles:[string, string],defaultOption = false) {
+        return this.item({ label:option , type:TYPE_OPTION.BOOL, value:toggles }, defaultOption)
+    }
+
     async render(waitEnter = true){
         let isReturn = false
         let isArrow = false
         let option = this.markedOption + 1
-        if( this.options.length === 0 ) return 0
+        if( this.options.length === 0 ) return 0 // Not options found
         do {
             cleanTerminal()
             await this.renderMenu(option)
@@ -131,9 +135,9 @@ export class Menu {
         let isReturn = false
         let isArrow = false
         let option = this.markedOption + 1
-        if( this.options.length === 0 ) return [0, '']
+        if( this.options.length === 0 ) return [0, ''] // Not options found
         do {
-            const isInput = this.options[ option -1 ].type
+            const isInput = this.options[ option - 1 ].type
             const canDelete = this.options[ option -1 ]?.value !== ''
             cleanTerminal()
             await this.renderMenu(option)
@@ -189,6 +193,19 @@ export class Menu {
             .join('\n')
         await writeTerminal(`[${colorTitle}]${this.title}[/${colorTitle}]\n${colored(bgColorOption, colorOption, optionsText)}\n`, this.x, this.y)
         return this
+    }
+
+    private renderLabel(option:typeOption) {
+        switch( option.type ) {
+            case TYPE_OPTION.INPUT:
+                return `${option.label}: ${option.value}`
+            case TYPE_OPTION.BOOL:
+                const [currentValue] = option.value as string[]
+                return `${option.label}: ${currentValue}`
+            default:
+                return option.label
+        }
+
     }
 
     async json2menu(json: any) {
