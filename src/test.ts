@@ -15,7 +15,8 @@ const [option, value] = await menu
     .input(" 1 - Saludo", true)
     .item(" 2 - Potencia.")
     .bool(" 3 - Toggle Test", ["[green]Si[/green]", "[red]No[/red]"])
-    .item(" 4 - Salir.")
+    .select(" 4 - Prueba select", ["Opcion 1", "Opcion 2", "Opcion 3", "Opcion 4", "Opcion 5"])
+    .item(" 5 - Salir.")
     .render()
 
 if( option===1) {
