@@ -9,12 +9,14 @@ const menu = createMenu({
     bgColorOptionHover: 'bgYellow',
     colorOptionHover: 'black',
 })
+
 const [option, value] = await menu
-    .head("Este es el encabezado del menu en verde")
+    .head("[green]Este es el encabezado del menu en verde[/green]")
     .input(" 1 - Saludo", true)
     .item(" 2 - Potencia.")
-    .item(" 3 - Salir.")
-    .renderInput()
+    .bool(" 3 - Toggle Test", ["[green]Si[/green]", "[red]No[/red]"])
+    .item(" 4 - Salir.")
+    .render()
 
 if( option===1) {
     console.log(`Hola mundo!${value ? ' en especial a '+value  : ''}`)
@@ -25,6 +27,9 @@ else if( option===2) {
     await writeTerminal(`El resultado de [red]${base}[/red]^[green]${exponente}[/green] es: ${Math.pow(base, exponente)}`)
 }
 else if( option===3) {
+    await writeTerminal(`Bool! ${value}`)
+}
+else if( option===4) {
     console.log("Adios!")
 }
 exit(0)

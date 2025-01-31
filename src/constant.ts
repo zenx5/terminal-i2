@@ -1,3 +1,5 @@
+import { typeOptionBool, typeOptionInput, typeOptionLabel } from "./index.d"
+
 export const KEYS = {
     UP: "up",
     DOWN: "down",
