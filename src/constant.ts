@@ -1,4 +1,4 @@
-import { typeOptionBool, typeOptionInput, typeOptionLabel, typeOptionSelect } from "./index.d"
+import { typeOptionBool, typeOptionInput, typeOptionLabel, typeOptionNumber, typeOptionSelect } from "./index.d"
 
 export const KEYS = {
     UP: "up",
@@ -13,6 +13,6 @@ export const TYPE_OPTION = {
     LABEL: 0 as typeOptionLabel,
     INPUT: 1 as typeOptionInput,
     BOOL: 2 as typeOptionBool,
-    SELECT: 3 as typeOptionSelect
-
+    SELECT: 3 as typeOptionSelect,
+    NUMBER: 4 as typeOptionNumber
 }

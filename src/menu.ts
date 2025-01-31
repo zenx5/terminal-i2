@@ -107,6 +107,20 @@ export class Menu {
         return this.item({ label:option, type:TYPE_OPTION.SELECT, value:[0, ...selections] }, defaultOption)
     }
 
+    number(option:string, config:any, defaultOption:boolean = false) {
+        const configNumber = Object.assign({
+            value: 0,
+            step: 1,
+            min: -Infinity,
+            max: Infinity
+        }, config)
+        return this.item({
+            label:option,
+            type:TYPE_OPTION.NUMBER,
+            value: configNumber
+        }, defaultOption)
+    }
+
     async render(waitEnter = true){
         let isReturn = false
         let isArrow = false
@@ -142,6 +156,18 @@ export class Menu {
                     ...option,
                     value: (option.value as string[]).sort( ()=> -1 )
                 }
+            case TYPE_OPTION.NUMBER:{
+                if( key!==KEYS.LEFT && key!==KEYS.RIGHT ) return option
+                const { value, min, max, step } = option.value
+                const direction = step*(Number(key===KEYS.RIGHT && value!==max) - Number(key===KEYS.LEFT && value!==min))
+                return {
+                    ...option,
+                    value:{
+                        ...option.value,
+                        value: value + direction
+                    }
+                }
+            }
             case TYPE_OPTION.SELECT:
                 if( key!==KEYS.LEFT && key!==KEYS.RIGHT ) return option
                 const [currentOption, ...options] = option.value
@@ -210,6 +236,13 @@ export class Menu {
             case TYPE_OPTION.BOOL:
                 const [currentValue] = option.value as string[]
                 return `${option.label} < ${currentValue} >`
+            case TYPE_OPTION.NUMBER:{
+                const { value, min, max, step } = option.value
+                const arrowLeft = value === min ? '|' : '<'
+                const arrowRight = value === max ? '|' : '>'
+                const fixLength = step.toString().split('.').at(1)?.length ?? 0
+                return `${option.label}  ${arrowLeft} [bgBlack][yellow] ${value.toFixed(fixLength)} [/yellow][/bgBlack] ${arrowRight} `
+            }
             case TYPE_OPTION.SELECT:
                 const [currentOption, ...options] = option.value
                 const arrowLeft = currentOption === 0 ? '|' : '<'
