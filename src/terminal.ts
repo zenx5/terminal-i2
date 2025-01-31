@@ -2,43 +2,13 @@ import readline from "node:readline"
 import chalk from "chalk"
 import { KEYS } from "./constant";
 
-type colorName = 'black' |
-'red' |
-'green' |
-'yellow' |
-'blue' |
-'magenta' |
-'cyan' |
-'white' |
-'gray' |
-'grey' |
-'blackBright' |
-'redBright' |
-'greenBright' |
-'yellowBright' |
-'blueBright' |
-'magentaBright' |
-'cyanBright' |
-'whiteBright';
+type colorName =    'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white' | 'gray' | 'grey' |
+                    'blackBright' |'redBright' | 'greenBright' | 'yellowBright' | 'blueBright' | 'magentaBright' |
+                    'cyanBright' | 'whiteBright';
 
-type colorBgName = 'bgBlack' |
-'bgRed' |
-'bgGreen' |
-'bgYellow' |
-'bgBlue' |
-'bgMagenta' |
-'bgCyan' |
-'bgWhite' |
-'bgGray' |
-'bgGrey' |
-'bgBlackBright' |
-'bgRedBright' |
-'bgGreenBright' |
-'bgYellowBright' |
-'bgBlueBright' |
-'bgMagentaBright' |
-'bgCyanBright' |
-'bgWhiteBright';
+type colorBgName =  'bgBlack' | 'bgRed' | 'bgGreen' | 'bgYellow' | 'bgBlue' | 'bgMagenta' | 'bgCyan' | 'bgWhite' |
+                    'bgGray' | 'bgGrey' | 'bgBlackBright' | 'bgRedBright' | 'bgGreenBright' | 'bgYellowBright' |
+                    'bgBlueBright' | 'bgMagentaBright' | 'bgCyanBright' | 'bgWhiteBright';
 
 export const terminal = readline.createInterface({
     input: process.stdin,
@@ -56,7 +26,7 @@ export const catchArrows = async () => {
                     process.stdin.pause();
                     reject('exit')
                 }
-                if( ['up', 'down', 'left', 'right'].includes(key.name) ){
+                if( [KEYS.UP, KEYS.DOWN, KEYS.LEFT, KEYS.RIGHT].includes(key.name) ){
                     resolve({ isArrow: true, name:key.name })
                 }
                 else {

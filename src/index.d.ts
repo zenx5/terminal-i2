@@ -1,10 +1,14 @@
-declare module 'terminal-i2';
+declare module 'terminal-i2'
 
-type typeOptionLabel = 0
-type typeOptionInput = 1
+export type typeOptionLabel = 0
+export type typeOptionInput = 1
+export type typeOptionBool = 2
+export type typeOptionSelect = 3
 
-type typeOption = {
+export type typeOptionGeneral = typeOptionLabel | typeOptionInput | typeOptionBool | typeOptionSelect
+
+export type typeOption = {
     label: string
-    type: typeOptionLabel|typeOptionInput
-    value?: string
+    type: typeOptionGeneral
+    value?: any
 }
