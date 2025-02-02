@@ -26,7 +26,7 @@ const defaultOptionsMenu:typeOptionsMenu = {
     bgColorOptionHover: "bgYellow"
 }
 
-export class Menu extends Options {
+class Menu extends Options {
     x: number = 0;
     y: number = 0;
     isTemp: boolean = false;
@@ -165,6 +165,6 @@ export class Menu extends Options {
 
 }
 
-export default function createMenu(config:typeOptionsMenu) {
+export function createMenu(config:typeOptionsMenu) {
     return new Menu(config)
 }

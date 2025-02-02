@@ -1,6 +1,10 @@
 import { exit } from "process";
 import { readTerminal, writeTerminal } from "./terminal";
-import createMenu from "./menu";
+import { createDialog, createMenu } from "./index";
+
+const dialog = createDialog({ title:"Saludo", description:`Hola mundo! en especial a Octavio` })
+dialog.render()
+exit(0)
 
 const menu = createMenu({
     colorTitle: 'white',
@@ -22,11 +26,12 @@ const [option, value] = await menu
         min: 0,
         max:10
     })
-    .item(" 5 - Salir.")
+    .item(" 6 - Salir.")
     .render()
 
 if( option===1) {
-    console.log(`Hola mundo!${value ? ' en especial a '+value  : ''}`)
+    const dialog = createDialog({ title:"Saludo", description:`Hola mundo!${value ? ' en especial a '+value  : ''}` })
+    dialog.render()
 }
 else if( option===2) {
     const base = parseInt(await readTerminal("Ingrese la [red]base[/red]: ") as string)
@@ -37,6 +42,12 @@ else if( option===3) {
     await writeTerminal(`Bool! ${value}`)
 }
 else if( option===4) {
-    console.log("Adios!")
+    console.log("Select: ", value.slice(1)[value[0]])
+}
+else if( option===5) {
+    console.log("Edad: ", value.value)
+}
+else if( option===6) {
+    console.log("Adios! ", value)
 }
 exit(0)
