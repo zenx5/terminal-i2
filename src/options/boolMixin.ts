@@ -4,8 +4,14 @@ import { KEYS, TYPE_OPTION } from "../constant"
 export default function boolMixin(Base:any){
     return class extends Base{
 
-        bool(option:string, config:any){
-            const { value, defaultSelection, clickable } = Object.assign({ value:[false, true], defaultSelection:false, clickable:true },config)
+        bool(option:string, configArg:any|string[]){
+            const defaultConfig = { value:[false, true], defaultSelection:false, clickable:true }
+            const config = configArg?.length===2 ? { value:configArg } : configArg
+            const {
+                value,
+                defaultSelection,
+                clickable
+            } = Object.assign(defaultConfig,config)
 
             return this.item({
                 label:option,
