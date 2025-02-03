@@ -4,9 +4,9 @@ import { KEYS, TYPE_OPTION } from "../constant"
 export default function boolMixin(Base:any){
     return class extends Base{
 
-        bool(option:string, configArg:any|string[]){
+        bool(option:string, configArg:typeOption|string[]){
             const defaultConfig = { value:[false, true], defaultSelection:false, clickable:true }
-            const config = configArg?.length===2 ? { value:configArg } : configArg
+            const config = Array.isArray( configArg ) ? { value:configArg } : configArg
             const {
                 value,
                 defaultSelection,
