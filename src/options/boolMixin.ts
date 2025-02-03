@@ -17,8 +17,8 @@ export default function boolMixin(Base:any){
                 label:option,
                 type:TYPE_OPTION.BOOL,
                 value: value.slice(0,2),
-                defaultSelection: defaultSelection,
-                clickable: clickable
+                defaultSelection,
+                clickable
             })
         }
 

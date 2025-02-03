@@ -15,7 +15,8 @@ export type typeOption = {
     value?: any
     name?: string
     defaultSelection?: boolean
-    clickable? : boolean
+    clickable?: boolean
+    compat?: boolean
 }
 
 export type RenderFunction = (option:typeOption) => string
