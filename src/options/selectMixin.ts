@@ -17,10 +17,9 @@ export default function selectMixin(Base:any){
                 label:option,
                 type:TYPE_OPTION.SELECT,
                 value:[0, ...value],
-                defaultSelection,
                 clickable,
                 compat
-            })
+            },defaultSelection)
         }
 
         actionSelect(option:typeOption, key:string){

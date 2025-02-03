@@ -4,8 +4,21 @@ import { KEYS, TYPE_OPTION } from "../constant"
 export default function inputMixin(Base:any){
     return class extends Base {
 
-        input(option:string, defaultOption:boolean = false) {
-            return this.item({ label:option , type:TYPE_OPTION.INPUT, value:'' }, defaultOption)
+        input(option:string,  configArg:typeOption) {
+            const defaultConfig = { value:'', defaultSelection:false, clickable:true }
+            const config = Array.isArray( configArg ) ? { value:configArg } : configArg
+            const {
+                value,
+                defaultSelection,
+                clickable
+            } = Object.assign(defaultConfig,config)
+
+            return this.item({
+                label:option,
+                type:TYPE_OPTION.INPUT,
+                value,
+                clickable
+            }, defaultSelection)
         }
 
         actionInput(option:typeOption, key:string){
