@@ -34,14 +34,14 @@ export default function selectMixin(Base:any){
 
         renderLabelSelect(option:typeOption){
             const [currentOption, ...options] = option.value
-            const limitLabel = option.compat ? '|  ---  |' : '|'
-            const arrowLeft = currentOption === 0 ? limitLabel : '<'
-            const arrowRight = currentOption === options.length - 1 ? limitLabel : '>'
+            const limitLabel = '[white]' + (option.compat ? '|  ---  |' : '|') + '[white]'
+            const arrowLeft = currentOption === 0 ? limitLabel : '[white]<[/white]'
+            const arrowRight = currentOption === options.length - 1 ? limitLabel : '[white]>[/white]'
             const limitStart = currentOption>=1 ? currentOption - 1 : currentOption
             const limitEnd = currentOption + 2
             const optionLabels = options.map( (value:string, index:number) => index===currentOption ? `[bgGreen] ${value} [/bgGreen]` : ` ${value} ` )
                                         .slice( option.compat ? limitStart : 0, option.compat ? limitEnd : options.length)
-                                        .join(' | ')
+                                        .join(' [white]|[/white] ')
             return `${option.label}  [bgBlack] ${arrowLeft} ${optionLabels} ${arrowRight} [/bgBlack]`
         }
     }

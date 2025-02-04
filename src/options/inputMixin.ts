@@ -38,7 +38,7 @@ export default function inputMixin(Base:any){
         }
 
         renderLabelInput(option:typeOption){
-            return `${option.label}: ${option.value}`
+            return `${option.label}: [bgBlack][white] ${option.value} [white][/bgBlack] `
         }
     }
 }

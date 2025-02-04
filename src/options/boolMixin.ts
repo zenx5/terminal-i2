@@ -23,7 +23,7 @@ export default function boolMixin(Base:any){
 
         renderLabelBool(option:typeOption){
             const [currentValue] = option.value as string[]
-            return `${option.label} < ${currentValue} >`
+            return `${option.label} [bgBlack] [white]<[/white] ${currentValue} [white]>[/white] [/bgBlack]`
         }
 
         actionBool(option:typeOption, key:string ){
