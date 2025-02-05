@@ -5,7 +5,7 @@ export default function inputMixin(Base:any){
     return class extends Base {
 
         input(option:string,  configArg:typeOption) {
-            const defaultConfig = { value:'', defaultSelection:false, clickable:true }
+            const defaultConfig = { value:'', defaultSelection:false, clickable:false }
             const config = Array.isArray( configArg ) ? { value:configArg } : configArg
             const {
                 value,

@@ -5,7 +5,7 @@ export default function boolMixin(Base:any){
     return class extends Base{
 
         bool(option:string, configArg:typeOption|string[]){
-            const defaultConfig = { value:[false, true], defaultSelection:false, clickable:true }
+            const defaultConfig = { value:[false, true], defaultSelection:false, clickable:false }
             const config = Array.isArray( configArg ) ? { value:configArg } : configArg
             const {
                 value,

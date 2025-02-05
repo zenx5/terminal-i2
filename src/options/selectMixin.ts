@@ -4,7 +4,7 @@ import { KEYS, TYPE_OPTION } from "../constant"
 export default function selectMixin(Base:any){
     return class extends Base {
         select(option:string, configArg:typeOption|string[]) {
-            const defaultConfig = { value:[], defaultSelection:false, clickable:true, compat:false }
+            const defaultConfig = { value:[], defaultSelection:false, clickable:false, compat:false }
             const config = Array.isArray( configArg ) ? { value:configArg } : configArg
             const {
                 value,
