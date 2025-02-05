@@ -1,5 +1,5 @@
 import { TYPE_OPTION } from "../../tools/constant";
-import { typeOption } from "../..";
+import { typeOption } from "../../index.d";
 import OptionBase from "./OptionBase";
 import inputMixin from "./inputMixin";
 import boolMixin from "./boolMixin";

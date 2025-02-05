@@ -1,4 +1,4 @@
-import { typeOption } from "../.."
+import { typeOption } from "../../index.d"
 import { KEYS, TYPE_OPTION } from "../../tools/constant"
 
 export default function selectMixin(Base:any){

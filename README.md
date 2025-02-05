@@ -10,7 +10,8 @@ npm install terminal-i2
 pnpm install terminal-i2
 ```
 
-
+## Examples
+We have added some examples that you can find in our repository, inside the `src/scripts` folder
 
 ## Usage
 

@@ -1,1 +1,2 @@
-export { default } from './menu.js';
+export { createMenu } from './interfaces/menu.js';
+export { createDialog } from './interfaces/dialog.js';
