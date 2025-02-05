@@ -1,4 +1,5 @@
-import { writeTerminal } from "../tools/terminal"
+import { KEYS } from "../tools/constant"
+import { catchArrows, writeTerminal } from "../tools/terminal"
 
 type VoidAction = ()=>void
 
@@ -11,75 +12,67 @@ type typeAction = {
 export class Dialog {
     title:string = ""
     description:string = ""
-    actions:typeAction[] = [
-        {
-            key: 'key__ok',
-            label: 'OK',
-            onAction: () => console.log('hola')
-        },
-        {
-            key: 'key_cancel',
-            label: 'Cancel',
-            onAction: () => console.log('hola')
-        },
-        {
-            key: 'key__info',
-            label: 'Info1',
-            onAction: () => console.log('hola')
-        }
-        ,
-        {
-            key: 'key__info',
-            label: 'Info2',
-            onAction: () => console.log('hola')
-        }
-        ,
-        {
-            key: 'key__info',
-            label: 'Info3',
-            onAction: () => console.log('hola')
-        }
-    ]
+    actions:typeAction[] = []
 
     constructor(title:string, description:string){
         this.title = title
         this.description = description
     }
 
-    addAction(key:string, label:string, onAction:()=>void) {
-        this.actions.push({
-            key,
-            label,
-            onAction
-        })
+    addAction(key:typeAction|string, label:string = '', onAction:()=>void = ()=>{}) {
+        if( typeof key === 'string' ) {
+            this.actions.push({
+                key,
+                label,
+                onAction
+            })
+        }else{
+            this.actions.push(key)
+        }
     }
 
     removeAction(key:string) {
         this.actions = this.actions.filter( (action:typeAction) => action.key!==key )
     }
 
-    render() {
+    async render() {
+        let isReturn = false
+        let isArrow = false
         const maxLength = Math.max( this.title.length, this.description.length ) + 8
         const line = new Array(Math.floor(maxLength*3/2)).fill('#').join('')
-        writeTerminal(
-            line+'\n'+
-            this.cover("", line) + '\n' +
-            this.cover(this.title, line) + '\n' +
-            this.cover(this.description, line)+ '\n' +
-            this.renderActions(line) +
-            this.cover("", line) + '\n' +
-            line + '\n'
-        )
+        let markedOptionOffset = 1
+        do{
+            writeTerminal(
+                line+'\n'+
+                this.cover("", line) + '\n' +
+                this.cover(this.title, line) + '\n' +
+                this.cover(this.description, line)+ '\n' +
+                this.renderActions(line, markedOptionOffset - 1 ) +
+                this.cover("", line) + '\n' +
+                line + '\n'
+            )
+            const response = await catchArrows() as { isArrow: boolean, name: string }
+            isArrow = response.isArrow
+            isReturn = response.name === KEYS.RETURN
+            if( response.name === KEYS.LEFT ){
+                markedOptionOffset = markedOptionOffset === 1 ? 5 : markedOptionOffset - 1
+            }
+            else if( response.name === KEYS.RIGHT ){
+                markedOptionOffset = markedOptionOffset === 5 ? 1 : markedOptionOffset + 1
+            }
+        } while(isArrow || !isReturn )
+        const { key, onAction } = this.actions[ markedOptionOffset - 1 ]
+        return { key, onAction }
     }
 
-    renderActions(line:string) {
-        const selectIndex = 2
+    renderActions(line:string, selected:number) {
         let stringActions = ''
+        if( this.actions.length === 0 ) return ''
         this.actions.forEach( (action, index) => {
             const indexTrue = index+1
             const separator = indexTrue%3 ? '|' : '\n'
             const last = indexTrue===this.actions.length
-            const label = index===selectIndex ? `[bgGreen] ${this.actions[index].label} [/bgGreen]` : ` ${this.actions[index].label} `
+            const label = index===selected ? `[bgGreen] ${this.actions[index].label} [/bgGreen]` : ` ${this.actions[index].label} `
             stringActions += label + (!last  ? separator : '')
         })
 
@@ -105,7 +98,7 @@ export class Dialog {
                 + lineBlank.slice(0, fixWrapperLength)
                 + (empty ? ' ' : text )
                 + lineBlank.slice(-fixWrapperLength)
-                + line.slice(-2) + ' ' + text.length
+                + line.slice(-2)
     }
 }
 
