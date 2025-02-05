@@ -76,11 +76,11 @@ export class Menu extends Options {
         return this;
     }
 
-    async render(waitEnter = true){
+    async render(waitEnter = true):Promise<[null|typeOption, string]>{
         let isReturn = false
         let isArrow = false
         let markedOptionOffset = this.markedOption + 1
-        if( this.options.length === 0 ) return [0, ''] // Not options found
+        if( this.options.length === 0 ) return [null, ''] // Not options found
         do {
             const { clickable } = this.options[ markedOptionOffset - 1 ]
             cleanTerminal()
@@ -101,11 +101,11 @@ export class Menu extends Options {
         } while(isArrow || waitEnter && !isReturn )
         const value = this.options[ markedOptionOffset - 1 ].type===TYPE_OPTION.BOOL ? (this.options[ markedOptionOffset - 1 ].value as string[])[0] : this.options[ markedOptionOffset - 1 ].value
         if( this.isTemp ) this.clean()
-        return [ markedOptionOffset, value ]
+        return [ this.options[ markedOptionOffset ], value ]
     }
 
-    async renderInput(waitEnter = true){
-        this.render(waitEnter)
+    async renderInput(waitEnter = true):Promise<[null|typeOption, string]>{
+        return await this.render(waitEnter)
     }
 
     clean(){
@@ -114,7 +114,7 @@ export class Menu extends Options {
         this.options = []
     }
 
-    private colored(bgColor:any, color:any, opt:string){
+    private colored(bgColor:any, color:any, opt:string):string{
         if( bgColor === '' ) return `[${color}]${opt}[/${color}]`
         return `[${bgColor}][${color}]${opt}[/${color}][/${bgColor}]`
     }
