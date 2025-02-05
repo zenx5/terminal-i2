@@ -76,35 +76,36 @@ class Menu extends Options {
         return this;
     }
 
-    async render(waitEnter = true){
+    async render(waitEnter = true):Promise<[null|typeOption, string]>{
         let isReturn = false
         let isArrow = false
-        let option = this.markedOption + 1
-        if( this.options.length === 0 ) return [0, ''] // Not options found
+        let markedOptionOffset = this.markedOption + 1
+        if( this.options.length === 0 ) return [null, ''] // Not options found
         do {
+            const { clickable } = this.options[ markedOptionOffset - 1 ]
             cleanTerminal()
-            await this.renderMenu(option)
+            await this.renderMenu( markedOptionOffset )
             const response = await catchArrows() as { isArrow: boolean, name: string }
             cleanTerminal()
             isArrow = response.isArrow
-            isReturn = response.name === KEYS.RETURN
+            isReturn = clickable ? response.name === KEYS.RETURN : false
             if( response.name === KEYS.UP ){
-                option = option === 1 ? this.options.length : option-1
+                markedOptionOffset = markedOptionOffset === 1 ? this.options.length : markedOptionOffset - 1
             }
             else if( response.name === KEYS.DOWN ){
-                option = option === this.options.length ? 1 : option+1
+                markedOptionOffset = markedOptionOffset === this.options.length ? 1 : markedOptionOffset + 1
             }
             else {
-                this.options[ option - 1 ] = this.actionOption( this.options[ option - 1 ], response.name )
+                this.options[ markedOptionOffset - 1 ] = this.actionOption( this.options[ markedOptionOffset - 1 ], response.name )
             }
         } while(isArrow || waitEnter && !isReturn )
-        const value = this.options[ option - 1 ].type===TYPE_OPTION.BOOL ? (this.options[ option - 1 ].value as string[])[0] : this.options[ option - 1 ].value
+        const value = this.options[ markedOptionOffset - 1 ].type===TYPE_OPTION.BOOL ? (this.options[ markedOptionOffset - 1 ].value as string[])[0] : this.options[ markedOptionOffset - 1 ].value
         if( this.isTemp ) this.clean()
-        return [ option, value ]
+        return [ this.options[ markedOptionOffset ], value ]
     }
 
-    async renderInput(waitEnter = true){
-        this.render(waitEnter)
+    async renderInput(waitEnter = true):Promise<[null|typeOption, string]>{
+        return await this.render(waitEnter)
     }
 
     clean(){
@@ -113,7 +114,7 @@ class Menu extends Options {
         this.options = []
     }
 
-    private colored(bgColor:any, color:any, opt:string){
+    private colored(bgColor:any, color:any, opt:string):string{
         if( bgColor === '' ) return `[${color}]${opt}[/${color}]`
         return `[${bgColor}][${color}]${opt}[/${color}][/${bgColor}]`
     }
