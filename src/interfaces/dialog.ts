@@ -1,4 +1,4 @@
-import { writeTerminal } from "./terminal"
+import { writeTerminal } from "../tools/terminal"
 
 type VoidAction = ()=>void
 

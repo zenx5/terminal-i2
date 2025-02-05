@@ -1,5 +1,5 @@
 import { exit } from "process";
-import { readTerminal, writeTerminal } from "../terminal";
+import { readTerminal, writeTerminal } from "../tools/terminal";
 import { createMenu } from "../index";
 
 const menu = createMenu({

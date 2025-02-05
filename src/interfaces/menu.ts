@@ -1,6 +1,6 @@
-import { typeOption, typeOptionGeneral } from "./index.d"
-import { KEYS, TYPE_OPTION } from "./constant";
-import { cleanTerminal, catchArrows, writeTerminal } from "./terminal";
+import { typeOption, typeOptionGeneral } from "../index.d"
+import { KEYS, TYPE_OPTION } from "../tools/constant";
+import { cleanTerminal, catchArrows, writeTerminal } from "../tools/terminal";
 import Options from "./options/MixOption";
 
 

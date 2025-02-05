@@ -1,2 +1,2 @@
-export { type typeOptionsMenu, createMenu } from './menu';
-export { createDialog } from './dialog'
+export { type typeOptionsMenu, createMenu } from './interfaces/menu';
+export { createDialog } from './interfaces/dialog'

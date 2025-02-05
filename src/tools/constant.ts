@@ -1,4 +1,4 @@
-import { typeOptionCustom, typeOptionBool, typeOptionInput, typeOptionLabel, typeOptionNumber, typeOptionSelect } from "./index.d"
+import { typeOptionCustom, typeOptionBool, typeOptionInput, typeOptionLabel, typeOptionNumber, typeOptionSelect } from ".."
 
 export const KEYS = {
     UP: "up",
