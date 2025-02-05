@@ -24,12 +24,14 @@ pnpm install terminal-i2
     - colorOptionHover: color of the options when the selector is over
     - bgColorOptionHover: color of the background of the options when the selector is over
 
-    ![type-options-menu](image.png)
+- Type of options dialog
+    - title: Title of the dialog
+    - description: The message you want to display in the dialog
 
 - Example 1
 ```javascript
-    import { createMenu } from 'terminal-i2';ç
-    const menu = new createMenu({
+    import { createMenu } from 'terminal-i2';
+    const menu = createMenu({
         colorTitle: 'red',
         bgColorOption: '',
         colorOption: 'white',
@@ -46,7 +48,7 @@ pnpm install terminal-i2
 - Example 2
 ```javascript
     import { createMenu } from 'terminal-i2';
-    const menu = new createMenu({
+    const menu = createMenu({
         colorTitle: 'red',
         bgColorOption: '',
         colorOption: 'white',
@@ -57,4 +59,14 @@ pnpm install terminal-i2
         markedOption: 1
     });
     const option = await menu.render()
+```
+
+- Example 3
+```javascript
+    import { createDialog } from 'terminal-i2';
+    const dialog = createDialog({
+        title:"Saludo",
+        description:`Hola mundo! en especial a Octavio`
+    })
+    const { key, label, onAction } = await dialog.render()
 ```
