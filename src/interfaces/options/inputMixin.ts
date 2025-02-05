@@ -1,5 +1,5 @@
-import { typeOption } from "../index.d"
-import { KEYS, TYPE_OPTION } from "../constant"
+import { typeOption } from "../.."
+import { KEYS, TYPE_OPTION } from "../../tools/constant"
 
 export default function inputMixin(Base:any){
     return class extends Base {

@@ -1,5 +1,5 @@
-import { TYPE_OPTION } from "../constant";
-import { typeOption, typeOptionGeneral } from "../index.d";
+import { TYPE_OPTION } from "../../tools/constant";
+import { typeOption, typeOptionGeneral } from "../..";
 
 
 export default class OptionBase {

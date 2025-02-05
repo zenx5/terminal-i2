@@ -1,6 +1,6 @@
 import { exit } from "process";
-import { readTerminal, writeTerminal } from "../terminal";
-import createMenu from "../menu";
+import { readTerminal, writeTerminal } from "../tools/terminal";
+import { createMenu } from "../index";
 
 const menu = createMenu({
     colorTitle: 'white',
@@ -22,7 +22,7 @@ const [option, , value] = await menu
         min: 0,
         max:10
     })
-    .item(" 5 - Salir.")
+    .item(" 6 - Salir.")
     .render()
 
 if( option===0) {

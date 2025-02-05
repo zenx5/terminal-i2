@@ -1,6 +1,6 @@
-import { typeOption, typeOptionGeneral } from "./index.d"
-import { KEYS, TYPE_OPTION } from "./constant";
-import { cleanTerminal, catchArrows, writeTerminal } from "./terminal";
+import { typeOption, typeOptionGeneral } from "../index.d"
+import { KEYS, TYPE_OPTION } from "../tools/constant";
+import { cleanTerminal, catchArrows, writeTerminal } from "../tools/terminal";
 import Options from "./options/MixOption";
 
 
@@ -26,7 +26,7 @@ const defaultOptionsMenu:typeOptionsMenu = {
     bgColorOptionHover: "bgYellow"
 }
 
-export class Menu extends Options {
+class Menu extends Options {
     x: number = 0;
     y: number = 0;
     isTemp: boolean = false;
@@ -167,6 +167,6 @@ export class Menu extends Options {
 
 }
 
-export default function createMenu(config:typeOptionsMenu) {
+export function createMenu(config:typeOptionsMenu) {
     return new Menu(config)
 }

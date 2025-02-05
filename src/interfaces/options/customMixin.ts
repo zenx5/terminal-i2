@@ -1,5 +1,5 @@
-import { typeOption, RenderFunction, ActionFunction, typeCustomOption } from "../index.d"
-import { TYPE_OPTION } from "../constant"
+import { typeOption, RenderFunction, ActionFunction, typeCustomOption } from "../.."
+import { TYPE_OPTION } from "../../tools/constant"
 
 export default function customMixin(Base:any){
     return class extends Base{

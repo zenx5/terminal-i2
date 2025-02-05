@@ -1,5 +1,5 @@
 import { exit } from "process";
-import createMenu from "../menu";
+import { createMenu } from "../interfaces/menu";
 
 const menu = createMenu({
     colorTitle: 'white',
