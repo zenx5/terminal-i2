@@ -7,7 +7,9 @@
 	"exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "node --watch --loader ts-node/esm ./src/test.ts",
+    "test": "node --watch --loader ts-node/esm ./src/scripts/test.ts",
+    "dialog": "node --watch --loader ts-node/esm ./src/scripts/dialog.ts",
+    "vite": "node --watch --loader ts-node/esm ./src/scripts/vite.ts",
     "build": "tsc && tsc-alias"
   },
   "keywords": [],

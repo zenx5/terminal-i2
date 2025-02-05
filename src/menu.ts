@@ -76,11 +76,11 @@ class Menu extends Options {
         return this;
     }
 
-    async render(waitEnter = true):Promise<[null|typeOption, string]>{
+    async render(waitEnter = true):Promise<[number, null|typeOption, string]>{
         let isReturn = false
         let isArrow = false
         let markedOptionOffset = this.markedOption + 1
-        if( this.options.length === 0 ) return [null, ''] // Not options found
+        if( this.options.length === 0 ) return [-1, null, ''] // Not options found
         do {
             const { clickable } = this.options[ markedOptionOffset - 1 ]
             cleanTerminal()
@@ -100,11 +100,12 @@ class Menu extends Options {
             }
         } while(isArrow || waitEnter && !isReturn )
         const value = this.options[ markedOptionOffset - 1 ].type===TYPE_OPTION.BOOL ? (this.options[ markedOptionOffset - 1 ].value as string[])[0] : this.options[ markedOptionOffset - 1 ].value
+        const optionClicked = this.options[ markedOptionOffset - 1 ]
         if( this.isTemp ) this.clean()
-        return [ this.options[ markedOptionOffset ], value ]
+        return [ markedOptionOffset - 1, optionClicked , value ]
     }
 
-    async renderInput(waitEnter = true):Promise<[null|typeOption, string]>{
+    async renderInput(waitEnter = true):Promise<[number, null|typeOption, string]>{
         return await this.render(waitEnter)
     }
 
