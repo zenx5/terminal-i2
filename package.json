@@ -7,7 +7,8 @@
 	"exports": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "test": "node --loader ts-node/esm ./src/test.ts",
+    "test": "node --loader ts-node/esm ./src/scripts/test.ts",
+    "vite": "node --loader ts-node/esm ./src/scripts/vite.ts",
     "build": "tsc && tsc-alias"
   },
   "keywords": [],
